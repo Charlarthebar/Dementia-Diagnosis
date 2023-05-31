@@ -1,0 +1,418 @@
+#Setting Default Widget Properties
+<Button>
+    # Background Color to Green for Buttons
+    background_normal: ""
+    background_color: (0,.9,.1,1)
+
+<Label>
+    font_size: "25dp"
+
+# Defining Rounded "Next" Button
+<RoundedNextButton@Button>
+    background_color: (0,0,0,0)
+    background_normal: ""
+    canvas.before:
+        Color:
+            rgba: (49/255, 247/255, 5/255, 1) if self.state == 'normal' else [0.2, 0.2, 0.2, 1] 
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [20]
+
+
+
+
+
+WindowManager:
+    TitleScreen:
+    DescriptionScreen:
+    FiveWordsIntroScreen:
+    FiveWordsScreen:
+    CheckWordsScreen:
+    DisplayScoreScreen:
+    Serial7sIntroScreen:
+    Serial7sScreen: 
+    Serial7sScoreScreen:
+    StroopTestIntroScreen:
+    StroopTestScreen:
+
+
+
+<TitleScreen>
+    name: "title"
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 50
+
+        Label: 
+            text: "Dementia Diagnosis Assessment"
+            halign: "center"
+            valign: "center"
+            font_size: 100
+            
+        BoxLayout:
+            orientation: "horizontal"
+            Label:
+                text: ""
+                width: 10
+            RoundedNextButton:
+                text: "Next"
+                size_hint: 1, 0.5
+                on_release: 
+                    app.root.current = "description"
+                    root.manager.transition.direction = "left"
+            Label:
+                text: ""
+                width: 10
+
+
+<DescriptionScreen@ScrollView>
+    name: "description"
+
+    BoxLayout:
+        padding: 20
+        spacing: 50
+        orientation: "vertical"
+
+        Label:
+            text: "This is a dementia diagnosis test. It is designed to give users a basic overview of their mental condition and give a general diagnosis of whether they are in some stage of dementia."
+            text_size: self.width, None
+            halign: "center"
+            valign: "center"
+            height: self.texture_size[1]
+
+
+        Label:
+            text: "The user will go through a series of tests, including a memory test, some basic puzzles, and a slurred speech detector. A score will be totaled based off of the results from these tests to give the user or a healcare professional an estimation of their approximate cognitive ability."
+            text_size: self.width, None
+            halign: "center"
+            valign: "center"
+            height: self.texture_size[1]
+
+        Label:
+            text: "** Disclaimer **"     
+            text_size: self.width, None
+            halign: "center"
+            valign: "center"
+            height: self.texture_size[1]
+        
+        Label:
+            text: "This is not an official dementia diagnosis test. This is designed to give the patient some insight into their condition and to assist doctors in their work."
+            text_size: self.width, None
+            halign: "center"
+            valign: "center"
+            height: self.texture_size[1]
+
+        RoundedNextButton:
+            text: "Start"
+            font_size: "25dp"
+            on_release:
+                app.root.current = "fivewordsintro"
+                root.manager.transition.direction = "left"
+
+
+<FiveWordsIntroScreen>
+    name: "fivewordsintro"
+
+    FloatLayout: 
+        Label: 
+            text: "Phase 1 - Word Memorization"
+            pos_hint: {"y": 0.3}
+        Label: 
+            text: "In the following screen, 5 words will be shown on the screen for 10 seconds. At the end of the entire process, you will have a chance to enter in the words you remembered, so do your best to remember them."
+            text_size: self.width, None
+            halign: "center"
+            valign: "center"
+            height: self.texture_size[1]
+        RoundedNextButton:
+            size_hint: 0.4, 0.2
+            text: "Proceed"
+
+            # {"x", "y", "top", "bottom", "left", "right"}
+            pos_hint: {"x": 0.3, "y": 0.05}
+
+            on_release:
+                app.root.current = "fivewords"
+                root.manager.transition.direction = "left"
+        
+
+
+<FiveWordsScreen>:
+    name: 'fivewords'
+
+    # Creates the overall BoxLayout for the FirstScreen
+    BoxLayout:
+        padding: 50
+        spacing: 50
+        orientation: "vertical"
+
+        # Creates a BoxLayout as an element within the BoxLayout
+        BoxLayout:
+            size_hint: 1, .2
+            orientation: "horizontal"
+            Label:
+                text:""
+                size_hint_x: .2
+            Label:
+                text: 'Memorize these 5 words:'
+                font_size: "30dp"
+
+                # Sets Background Color
+                background_color: (1, 1, 1, 1)
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle: 
+                        size: self.size
+                        pos: self.pos
+
+                # Text Properties
+                color: (0, 0, 0, 1)
+                bold: True
+                outline_color: (0,0,0)
+                outline_width: "0dp"
+            Label: 
+                text: ""
+                size_hint_x: .2
+
+        # Creates a BoxLayout as an element within the BoxLayout
+        BoxLayout:
+            size_hint: 1, 0.6
+            orientation: "vertical"
+            Label:
+                id: word1
+                text: ''
+                
+            Label:
+                id: word2
+                text: ''
+                
+            Label:
+                id: word3
+                text: ''
+                
+            Label:
+                id: word4
+                text: ''
+                
+            Label:
+                id: word5
+                text: ''
+            
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, .2
+            Label:
+                text:""
+            RoundedNextButton:
+                text: 'Next'
+                font_size: "25dp"
+                on_release: 
+                    app.root.current = 'check5words'
+                    root.manager.transition.direction = "left"
+            Label:
+                text:""
+            
+
+<CheckWordsScreen>:
+    name: 'check5words'
+    
+    # Creates the GridLayout for SecondScreen
+    GridLayout:
+        rows: 4
+        padding: 50
+        spacing: 50
+        
+        Button:
+            text: "Back"
+            font_size: "20dp"
+            size_hint: .5, .2
+            on_release: 
+                app.root.current = "fivewords"
+                root.manager.transition.direction = "right"
+            background_color: (252/255,25/255,25/255,1)
+            
+        Label:
+            text: 'Enter the words you remember (either separate words by spaces, or press enter after typing each word):' # Instructions for the user
+
+            # The next 5 lines are for formatting the text and wrapping it
+            text_size: self.width, None  # Set text_size to match the width of the GridLayout
+            halign: 'center'  # Align horizontally to the center
+            valign: 'middle'  # Align vertically to the middle
+            size_hint_y: None  # Set size_hint_y to None so the Label will resize to fit its content
+            height: self.texture_size[1]  # Set height to match the height of the wrapped text
+
+            font_size: "30dp"
+            col_span: 2
+            size_hint: 2, 1
+            
+        # This is where the user will enter their words
+        TextInput:
+            id: textinput1
+            multiline: False
+            font_size: "25dp"
+            on_text: 
+                root.input1 = self.text
+            
+            # This function calculates to see if correct words are entered
+            on_text_validate:
+                app.calculatewordmemorization(root.input1.split())
+                self.text = ''
+                self.focus = True
+
+        
+        BoxLayout:
+            orientation: "horizontal"
+            padding: "20dp"
+            Label:
+                text:""
+            # Button to click to check the score
+            RoundedNextButton:
+                text: "Check Score"
+                font_size: "40dp"
+                on_release: 
+                    app.root.current = "displayscore"
+                    root.manager.transition.direction = "left"
+                    app.root.get_screen('check5words').score = app.wordmemorizationscore
+            Label:
+                text:""
+
+<DisplayScoreScreen>:
+    name: 'displayscore'
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: 50
+        spacing: 50
+        Label:
+            font_size: "80dp"
+            size_hint: 1, .4
+            text: "You scored..."
+
+        Label:
+            font_size: "80dp"
+            size_hint: 1, .4
+            text: root.wordmemorizationscore    # Display the score as a fraction of the total words
+
+        RoundedNextButton:
+            text: "Next"
+            size_hint: 1, .2
+            on_release:
+                app.root.current = "serial7sintro"
+                root.manager.transition.direction = "left"
+
+<Serial7sIntroScreen>
+    name: "serial7sintro"
+
+    FloatLayout:
+        padding: 50
+        spacing: 50
+        Label:
+            text: "Phase 2 - Serial 7's Test"
+            pos_hint: {"x": 0, "y": 0.2}
+        Label:
+            text: "Next, you will have to count down from 100 by 7s, entering these 5 consecutive numbers. For example, if you were counting down from 65, you would enter: 58, 51, 44, 37, and 30"
+            text_size: self.width, None
+            height: self.texture_size[1]
+            halign: "center"
+            valign: "center"
+        RoundedNextButton:
+            text: "Proceed"
+            size_hint: .7, .2
+            pos_hint: {"x": 0.15, "y": 0.1}
+            on_release: 
+                app.root.current = "serial7sscreen"
+                root.manager.transition.direction = "left"
+
+<Serial7sScreen>
+    name: "serial7sscreen"
+
+    FloatLayout:
+        padding: 50
+        spacing: 50
+        Label:
+            text: "Count down from 100 by 7s"
+            pos_hint: {"y": 0.4}
+        Label:
+            text: "Input 5 numbers"
+            pos_hint: {"y": 0.3}
+        TextInput: 
+            id: textinput2
+            size_hint: 0.9, .3
+            pos_hint: {"x": 0.05, "y": 0.4}
+            multiline: False
+            font_size: "25dp"
+            on_text: 
+                root.inputnums = self.text
+            on_text_validate:
+                app.calculateserial7s(root.inputnums.split())
+                self.text = ''
+                self.focus = True
+        RoundedNextButton:
+            size_hint: 0.5, 0.2
+            pos_hint: {"x": 0.25, "y": 0.1}
+            text: "Next"
+            on_release:
+                app.root.current = "serial7sscore"
+                root.manager.transition.direction = "left"
+                app.root.get_screen("serial7sscreen").score = app.serial7sscore
+
+<Serial7sScoreScreen>
+    name: "serial7sscore"
+    
+    BoxLayout:
+        orientation: "vertical"
+        padding: 50
+        spacing: 50
+        Label:
+            font_size: "80dp"
+            size_hint: 1, .4
+            text: "You scored..."
+
+        Label:
+            font_size: "80dp"
+            size_hint: 1, .4
+            text: root.serial7sscore    # Display the score as a fraction of the total numbers
+
+        RoundedNextButton:
+            text: "Next"
+            size_hint: 1, .2
+            on_release:
+                app.root.current = "strooptestintro"
+                root.manager.transition.direction = "left"
+
+
+
+<StroopTestIntroScreen>
+    name: "strooptestintro"
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 50
+
+        Label:
+            text: "Phase 3 - Stroop Test"
+        Label:
+            text: "This test involves asking the participant to name the color of ink in which a word is written, while ignoring the actual word itself. This task can be modified by using incongruent stimuli (e.g., the word \"red\" written in blue ink) to increase the difficulty."
+            text_size: self.width, None
+            halign: "center"
+            valign: "center"
+            height: self.texture_size[1]
+        RoundedNextButton:
+            text: "Next"
+            size_hint: 0.5, 0.5
+            halign: "center"
+            on_release: 
+                app.root.current = "strooptest"
+
+
+<StroopTestScreen>
+    name: "strooptest"
+
+    FloatLayout:
+        Label: 
+            text: "Red"
+        
+
